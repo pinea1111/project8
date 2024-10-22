@@ -172,7 +172,7 @@ We will be creating the VPC with the following
 10. NAT Gateway for Private subnets
 11. Internet Gateway for public subnets.
 
-## Step 1:  Clone thge repo into the instance and CD in the Cloned Repository
+## Step 1:  Clone the repo into the instance and CD in the Cloned Repository
 - clone it using the following command.
 ```
 git clone https://github.com/TobiOlajumoke/Terraform-VPC.git
@@ -219,39 +219,49 @@ The modules/vpc folder contains the following VPC related resources. All the res
 7. vpc
 The infra/vpc/main.tf file calls all the vpc module with all the VPC resources using the variables we pass using the vpc.tfvars file
 
-├── infra
-│   └── vpc
-│       ├── main.tf
-│       └── variables.tf
-├── modules
-│   └── vpc
-│       ├── endpoint.tf
-│       ├── internet-gateway.tf
-│       ├── nacl.tf
-│       ├── nat-gateway.tf
-│       ├── outputs.tf
-│       ├── route-tables.tf
-│       ├── subnet.tf
-│       ├── variables.tf
-│       └── vpc.tf
-└── vars
-    └── dev
-        └── vpc.tfvars
 
-```
 
-vars folder contains the variables file named vpc.tfvars. It is the only file that needs modification
+## Step 2
+- cd into vars/dev/vpc.tfvars 
+- using any text editor of your choce Nano or VIM and change the #tag owner to your name eg "Femi" in this demo i used "DevOps"
 
-The modules/vpc folder contains the following VPC related resources. All the resource provisioning logic is part of these resources.
 
-1. endpoint
-2. internet-gateway
-3. nacl
-4. nat-gateway
-5. route-tables
-6. subnet
-7. vpc
-The infra/vpc/main.tf file calls all the vpc module with all the VPC resources using the variables we pass using the vpc.tfvars file
+
+```bash
+#vpc
+region               = "us-west-2"
+vpc_cidr_block       = "10.0.0.0/16"
+instance_tenancy     = "default"
+enable_dns_support   = true
+enable_dns_hostnames = true
+
+#elastic ip
+domain = "vpc"
+
+#nat-gateway
+create_nat_gateway = true
+
+#route-table
+destination_cidr_block = "0.0.0.0/0"
+
+#tags
+owner       = "DevOps"
+environment = "dev"
+cost_center = "DevOps-commerce"
+application = "OpsApp"
+
+#subnet
+
+map_public_ip_on_launch       = true
+
+public_subnet_cidr_blocks     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+app_subnet_cidr_blocks        = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
+db_subnet_cidr_blocks         = ["10.0.7.0/24", "10.0.8.0/24", "10.0.9.0/24"]
+management_subnet_cidr_blocks = ["10.0.10.0/24", "10.0.11.0/24", "10.0.12.0/24"]
+platform_subnet_cidr_blocks   = ["10.0.13.0/24", "10.0.14.0/24", "10.0.15.0/24"]
+availability_zones            = ["us-west-2a", "us-west-2b", "us-west-2c"]
+
+#public nacl
 
 ingress_public_nacl_rule_no    = [100]
 ingress_public_nacl_action     = ["allow"]
